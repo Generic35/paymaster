@@ -61,6 +61,12 @@ contract PaymasterTest is Test {
         paymaster.transferOwnership(PAYMASTER_SIGNER);
     }
 
+    function test_transferOwnershipToValidAddress() public {
+        address newOwner = address(0x1234567890123456789012345678901234567890);
+        paymaster.transferOwnership(newOwner);
+        assertEq(paymaster.owner(), newOwner);
+    }
+
     function test_getHash() public {
         UserOperation memory userOp = createUserOp();
         userOp.sender = ACCOUNT_OWNER;
