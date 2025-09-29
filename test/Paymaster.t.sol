@@ -52,7 +52,7 @@ contract PaymasterTest is Test {
     }
 
     function test_zeroAddressTransferOwnership() public {
-        vm.expectRevert("Paymaster: owner cannot be address(0)");
+        vm.expectRevert("Ownable: new owner is the zero address");
         paymaster.transferOwnership(address(0));
     }
 
@@ -80,7 +80,7 @@ contract PaymasterTest is Test {
         UserOperation memory userOp = createUserOp();
         signUserOp(userOp);
 
-        vm.expectRevert(createEncodedValidationResult(false, 53025));
+        vm.expectRevert(createEncodedValidationResult(false, 52981));
         entrypoint.simulateValidation(userOp);
     }
 
@@ -90,7 +90,7 @@ contract PaymasterTest is Test {
         userOp.paymasterAndData = abi.encodePacked(address(paymaster), abi.encode(MOCK_VALID_UNTIL, MOCK_VALID_AFTER), r, s, v);
         signUserOp(userOp);
 
-        vm.expectRevert(createEncodedValidationResult(true, 53035));
+        vm.expectRevert(createEncodedValidationResult(true, 52991));
         entrypoint.simulateValidation(userOp);
     }
 
